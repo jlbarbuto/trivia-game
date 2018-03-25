@@ -116,11 +116,22 @@ var quizLen = objArray.length; //length of array (aka number of questions in qui
 //Functions =====================
 function guessChecker(){  //Checks for right or wrong answers
     if (guess === quiz[QPointer].correctLetter){ //correct answer will display yes! screen
-        $("#question").text("Yes!");
-        $("#choiceA").text("");
-        $("#choiceB").text("");
-        $("#choiceC").text("");
-        $("#choiceD").text("");
+        $(".questionArea").empty();
+        $(".questionArea").html(
+            `
+            <div class="timer">
+                Time Left: 10
+                </div>
+                <br>
+                <div id="question">Yes!</div>
+            `
+        );
+
+        // $("#question").text("Yes!");
+        // $("#choiceA").text("");
+        // $("#choiceB").text("");
+        // $("#choiceC").text("");
+        // $("#choiceD").text("");
         score++
         qPointer++;
         QPointer = "q" + qPointer;
@@ -128,11 +139,26 @@ function guessChecker(){  //Checks for right or wrong answers
         endCheck();
     }
     else{
-        $("#question").text("Nope."); //wrong answer will display Nope. and show the correct answer
-        $("#choiceA").text("The correct answer was: " + quiz[QPointer].correctAns);
-        $("#choiceB").text("");
-        $("#choiceC").text("");
-        $("#choiceD").text("");
+        $(".questionArea").empty();
+        $(".questionArea").html(
+            `
+            <div class="timer">
+                Time Left: 10
+            </div>
+            <br>
+            <div id="question">Nope.</div>
+            <br>
+            <div class="answers">
+                <div class="result">The correct answer was: ${quiz[QPointer].correctAns}</div>
+            </div>
+            `
+        );
+
+        // $("#question").text("Nope."); //wrong answer will display Nope. and show the correct answer
+        // $("#choiceA").text("The correct answer was: " + quiz[QPointer].correctAns);
+        // $("#choiceB").text("");
+        // $("#choiceC").text("");
+        // $("#choiceD").text("");
         qPointer++;
         QPointer = "q" + qPointer;
         stop();
@@ -143,11 +169,29 @@ function guessChecker(){  //Checks for right or wrong answers
 function loadNext(){  //brings up the next question in the quiz object
     var questionStr = quiz[QPointer].question;
     stop();
-    $("#question").text(questionStr);
-    $("#choiceA").text("A. " + quiz[QPointer].ansA);
-    $("#choiceB").text("B. " + quiz[QPointer].ansB);
-    $("#choiceC").text("C. " + quiz[QPointer].ansC);
-    $("#choiceD").text("D. " + quiz[QPointer].ansD);
+    $(".questionArea").empty();
+    $(".questionArea").html(
+        `
+        <div class="timer">
+            Time Left: 10
+        </div>
+        <br>
+        <div id="question">${questionStr}</div>
+        <br>
+        <div class="answers">
+            <div class="answer" id="choiceA">A. ${quiz[QPointer].ansA}</div>
+            <div class="answer" id="choiceB">B. ${quiz[QPointer].ansB}</div>
+            <div class="answer" id="choiceC">C. ${quiz[QPointer].ansC}</div>
+            <div class="answer" id="choiceD">D. ${quiz[QPointer].ansD}</div>
+        </div>
+        `
+    );
+
+    // $("#question").text(questionStr);
+    // $("#choiceA").text("A. " + quiz[QPointer].ansA);
+    // $("#choiceB").text("B. " + quiz[QPointer].ansB);
+    // $("#choiceC").text("C. " + quiz[QPointer].ansC);
+    // $("#choiceD").text("D. " + quiz[QPointer].ansD);
     run();    
 };
 
@@ -162,11 +206,26 @@ function decrement(){ //keeps the time and prints out remaining time to the page
     $(".timer").text("Time Left: " + timer);
 
     if (timer === 0){ //if timer reaches 0, time's up! will display before loading the next question
-        $("#question").text("Time's up!");
-        $("#choiceA").text("The correct answer was: " + quiz[QPointer].correctAns);
-        $("#choiceB").text("");
-        $("#choiceC").text("");
-        $("#choiceD").text("");
+        $(".questionArea").empty();
+        $(".questionArea").html(
+            `
+            <div class="timer">
+                Time Left: 10
+            </div>
+            <br>
+            <div id="question">Time's up!</div>
+            <br>
+            <div class="answers">
+                <div class="result">The correct answer was: ${quiz[QPointer].correctAns}</div>
+            </div>
+            `
+        );
+
+        // $("#question").text("Time's up!");
+        // $("#choiceA").text("The correct answer was: " + quiz[QPointer].correctAns);
+        // $("#choiceB").text("");
+        // $("#choiceC").text("");
+        // $("#choiceD").text("");
         qPointer++;
         QPointer = "q" + qPointer;
         stop();
@@ -176,11 +235,26 @@ function decrement(){ //keeps the time and prints out remaining time to the page
 
 function endCheck(){ //checks to see if the last question has been reached
     if (qPointer>=quizLen){
-        $("#question").text("You answered all the questions!");
-        $("#choiceA").text("Score: " + score + "/10");
-        $("#choiceB").text("");
-        $("#choiceC").text("");
-        $("#choiceD").text("");
+        $(".questionArea").empty();
+        $(".questionArea").html(
+            `
+            <div class="timer">
+                Time Left: 10
+            </div>
+            <br>
+            <div id="question">You answered all the questions!</div>
+            <br>
+            <div class="answers">
+                <div class="result">Score: ${score}/10</div>
+            </div>
+            `
+        );
+
+        // $("#question").text("You answered all the questions!");
+        // $("#choiceA").text("Score: " + score + "/10");
+        // $("#choiceB").text("");
+        // $("#choiceC").text("");
+        // $("#choiceD").text("");
     } else{
         setTimeout(loadNext, 3000);
     }
