@@ -3,8 +3,10 @@ var qPointer = 1; //points to the number of the current question
 var QPointer = "q" + qPointer; //points to the full name of the question
 var guess = ""; //answer choice the user clicks
 var score = 0; //total number of correct guess by the user
-var intervalID //holds the interval for the run function
-var timer = 10 //seconds left on the timer
+var intervalID; //holds the interval for the questions
+var timer = 10; //seconds left on the question timer
+var intervalID2; //holds the interval for the post-question screen
+var timer2 = 6; //seonds left on the post-question screen
 
 var quiz = {
     q1: {
@@ -108,9 +110,12 @@ var quiz = {
     }
 };
 
+var objArray = Object.keys(quiz); //puts object properties to an array
+var quizLen = objArray.length; //length of array (aka number of questions in quiz)
+
 //Functions =====================
-function guessChecker(){
-    if (guess === quiz[QPointer].correctLetter){
+function guessChecker(){  //Checks for right or wrong answers
+    if (guess === quiz[QPointer].correctLetter){ //correct answer will display yes! screen
         $("#question").text("Yes!");
         $("#choiceA").text("");
         $("#choiceB").text("");
@@ -119,34 +124,36 @@ function guessChecker(){
         score++
         qPointer++;
         QPointer = "q" + qPointer;
-        loadNext();
+        stop();
+        endCheck();
     }
     else{
-        $("#question").text("Nope.");
+        $("#question").text("Nope."); //wrong answer will display Nope. and show the correct answer
         $("#choiceA").text("The correct answer was: " + quiz[QPointer].correctAns);
         $("#choiceB").text("");
         $("#choiceC").text("");
         $("#choiceD").text("");
         qPointer++;
         QPointer = "q" + qPointer;
-        loadNext();
+        stop();
+        endCheck();
     }
 };
 
 function loadNext(){  //brings up the next question in the quiz object
     var questionStr = quiz[QPointer].question;
-
+    stop();
     $("#question").text(questionStr);
     $("#choiceA").text("A. " + quiz[QPointer].ansA);
     $("#choiceB").text("B. " + quiz[QPointer].ansB);
     $("#choiceC").text("C. " + quiz[QPointer].ansC);
     $("#choiceD").text("D. " + quiz[QPointer].ansD);
-
     run();    
 };
 
-function run(){  //starts the countdown, continues every second
+function run(){  //resets the countdown to 10, starts counting down every second
     clearInterval(intervalID);
+    timer = 10;
     intervalID = setInterval(decrement, 1000);
 };
 
@@ -154,17 +161,32 @@ function decrement(){ //keeps the time and prints out remaining time to the page
     timer--;
     $(".timer").text("Time Left: " + timer);
 
-    if (timer === 0){
+    if (timer === 0){ //if timer reaches 0, time's up! will display before loading the next question
         $("#question").text("Time's up!");
         $("#choiceA").text("The correct answer was: " + quiz[QPointer].correctAns);
         $("#choiceB").text("");
         $("#choiceC").text("");
         $("#choiceD").text("");
+        qPointer++;
+        QPointer = "q" + qPointer;
         stop();
+        endCheck();
     }
 }
 
-function stop(){
+function endCheck(){ //checks to see if the last question has been reached
+    if (qPointer>=quizLen){
+        $("#question").text("You answered all the questions!");
+        $("#choiceA").text("Score: " + score + "/10");
+        $("#choiceB").text("");
+        $("#choiceC").text("");
+        $("#choiceD").text("");
+    } else{
+        setTimeout(loadNext, 3000);
+    }
+}
+
+function stop(){ //clears the interval
     clearInterval(intervalID);
 };
 
@@ -172,8 +194,6 @@ function stop(){
 
 //Page initializes with first question chosen from question array
 loadNext();
-
-//Timer gives user 30 seconds to answer question 
 
 //After 30 seconds OR user clicks an answer, score will be recorded
 $("#choiceA").click(function(){
@@ -192,11 +212,5 @@ $("#choiceD").click(function(){
     guess = "D";
     guessChecker();
 });
-
-//Correct answer will display a Yay! screen
-
-//Wrong answer will display a -_- screen and let the user know the correct answer
-
-//New question will display after 5 seconds
 
 //End of questions, final score will be shown to user
