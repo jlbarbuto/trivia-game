@@ -253,4 +253,11 @@ function stop(){ //clears the interval
 
 //Main Process ==================
 //Page initializes with first question chosen from question object
-loadNext();
+$(".questionArea").html(
+    `
+    <button class="start">Start</button>
+    `
+);
+$(".start").click(function(){
+    loadNext();
+});
