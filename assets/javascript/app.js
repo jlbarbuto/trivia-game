@@ -5,8 +5,6 @@ var guess = ""; //answer choice the user clicks
 var score = 0; //total number of correct guess by the user
 var intervalID; //holds the interval for the questions
 var timer = 30; //seconds left on the question timer
-var intervalID2; //holds the interval for the post-question screen
-// var timer2 = 6; //seonds left on the post-question screen
 
 var quiz = {
     q1: {
@@ -254,5 +252,5 @@ function stop(){ //clears the interval
 };
 
 //Main Process ==================
-//Page initializes with first question chosen from question array
+//Page initializes with first question chosen from question object
 loadNext();
