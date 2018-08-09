@@ -8,4 +8,4 @@ Players are given 30 seconds to answer each of the 10 questions. If no answer is
 
 ## Other Information
 
-This app was built using HTML, CSS, and jQuery.
+This app was built using HTML, CSS, and JavaScript (jQuery).
